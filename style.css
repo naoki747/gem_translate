@@ -1,77 +1,204 @@
 :root {
-  --red: #ff9393;
-  --green: #93ffa9;
-  --blue: #93adff;
+  --bg: #0f172a;
+  --card: #111827;
+  --border: #1f2937;
+  --text: #ffffff;
+  --muted: #94a3b8;
+  --blue: #3b82f6;
 }
 
 * {
-  padding: 0px;
-  margin: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: Verdana, serif;
+  font-family:
+    "Inter",
+    "Segoe UI",
+    sans-serif;
 }
 
 body {
-  background-color: #353535;
-  color: white;
-  padding: 50px 5%;
-  text-align: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(59,130,246,.25),
+      transparent 40%
+    ),
+    #020617;
+  color: var(--text);
 }
 
-input {
-  width: 700px;
+/* ヘッダー */
+
+.header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  backdrop-filter: blur(12px);
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* メイン */
+
+.container {
+  max-width: 1400px;
+  margin: auto;
+  padding: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 40px;
+}
+
+/* 左 */
+
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.badge {
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(59,130,246,.15);
+  color: #93c5fd;
+  margin-bottom: 24px;
+}
+
+.info-panel h2 {
+  font-size: 56px;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.info-panel p {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.feature {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.05);
+  padding: 16px;
+  border-radius: 14px;
+}
+
+/* 右 */
+
+.translator-panel {
+  background: rgba(17,24,39,.9);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.4);
+}
+
+.language-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.arrow {
+  color: var(--blue);
+  font-size: 22px;
+}
+
+.input-group {
+  margin-bottom: 22px;
+}
+
+.input-group label {
   display: block;
-  border: 5px solid var(--blue);
-  padding: 15px 20px;
-  margin: 5px auto;
-  font-size: 25px;
-  font-family: monospace;
-  background-color: inherit;
-  color: inherit;
-  border-radius: 10px;
-  transition: border-color 250ms;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
-input:focus {
-  border-color: var(--green);
+/* inputは維持 */
+
+input[type="url"] {
+  width: 100%;
+  height: 58px;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  background: #0f172a;
+  color: white;
+  padding: 0 16px;
   outline: none;
+  transition: .2s;
+}
+
+input[type="url"]:focus {
+  border-color: #3b82f6;
+  box-shadow:
+    0 0 0 4px rgba(59,130,246,.15);
+}
+
+/* buttonは維持 */
+
+.button-area {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
 }
 
 button {
-  width: 700px;
-  background-color: var(--blue);
-  color: #222222;
-  font-size: 20px;
-  padding: 30px;
   border: none;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: bold;
+  color: white;
   cursor: pointer;
-  transition: background-color 250ms;
+  border-radius: 14px;
+  padding: 14px 40px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3b82f6,
+      #6366f1
+    );
+
+  transition: .25s;
 }
 
 button:hover {
-  background-color: var(--green);
+  transform: translateY(-2px);
 }
 
-p {
-  margin: 20px 0px;
+button:active {
+  transform: translateY(0);
 }
 
-a {
-  color: var(--red);
-}
+@media (max-width: 900px) {
 
-a:hover {
-  text-decoration: none;
-}
+  .container {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
 
-.credit {
-  font-size: smaller;
-  position: absolute;
-  top: auto;
-  left: auto;
-  right: 10px;
-  bottom: 10px;
+  .info-panel h2 {
+    font-size: 42px;
+  }
 }
