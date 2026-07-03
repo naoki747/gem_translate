@@ -1,99 +1,114 @@
 <!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Gem Translate</title>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gem Translate</title>
+    ./style.css
+    ./script.jsscript>
+  </head>
 
-  <link rel="stylesheet" href="./style.css">
-  <script src="./script.js" defer></script>
-</head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-icon">G</div>
+          <span>Gem Translate</span>
+        </div>
 
-<body>
-
-  <header class="header">
-    <h1>Gem Translate</h1>
-  </header>
-
-  <main class="container">
-
-    <section class="info-panel">
-
-      <div class="badge">
-        次世代翻訳サービス
+        <nav class="nav-links">
+          #特徴</a>
+          #使い方</a>
+          #サービス概要</a>
+        </nav>
       </div>
+    </header>
 
-      <h2>
-        URLを<br>
-        かんたん翻訳
-      </h2>
+    <main class="container">
+      <section class="info-panel">
+        <div class="badge">AI URL Translation Service</div>
 
+        <h1>
+          URLを入れるだけで、<br />
+          翻訳ページへすぐアクセス。
+        </h1>
+
+        <p class="lead">
+          Gem Translateは、URLを入力して翻訳ページへすばやく移動できる
+          シンプルで使いやすい翻訳サポートツールです。
+        </p>
+
+        <div class="feature-list">
+          <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <div>
+              <h3>すばやく変換</h3>
+              <p>URLを入力してボタンを押すだけ。余計な操作なしで使えます。</p>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">🌐</span>
+            <div>
+              <h3>シンプルな操作</h3>
+              <p>難しい設定は不要。誰でも直感的に使える画面設計です。</p>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">✨</span>
+            <div>
+              <h3>モダンなUI</h3>
+              <p>見やすく、使いやすく、ホームページ風のデザインにしました。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="translator-panel">
+        <div class="translator-header">
+          <div>
+            <span class="small-label">Translate</span>
+            <h2>URL翻訳</h2>
+          </div>
+          <div class="status-badge">Online</div>
+        </div>
+
+        <div class="language-bar">
+          <span>翻訳元</span>
+          <span class="arrow">→</span>
+          <span>翻訳先</span>
+        </div>
+
+        <div class="input-group">
+          <label>翻訳したいURL</label>
+          <input type="url" value="https://google.com" />
+        </div>
+
+        <div class="button-area">
+          <button>
+            <span style="font-size: 20px">gem translate</span>
+          </button>
+        </div>
+
+        <div class="input-group">
+          <label>翻訳後のURL</label>
+          <input type="url" placeholder="翻訳結果がここに表示されます" />
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
       <p>
-        Gem TranslateはURLを入力するだけで、
-        素早く翻訳ページへアクセスできるシンプルなサービスです。
+        <a href="https://github.com/reactor-coding/buypass">
+          reactor-coding/buypass
+        </a>
+        (remixed
+        <a href="https://github.com/bypassiwastaken/buypass">
+          bypassiwastaken/buypass
+        </a>)
       </p>
-
-      <div class="features">
-
-        <div class="feature">
-          ⚡ 高速変換
-        </div>
-
-        <div class="feature">
-          🌎 多言語対応
-        </div>
-
-        <div class="feature">
-          🔒 シンプル設計
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="translator-panel">
-
-      <div class="language-header">
-        <span>英語</span>
-        <span class="arrow">→</span>
-        <span>日本語</span>
-      </div>
-
-      <div class="input-group">
-
-        <label>翻訳元URL</label>
-
-        <input
-          type="url"
-          value="https://google.com"
-        >
-
-      </div>
-
-      <div class="button-area">
-
-        <button>
-          <span style="font-size:20px">
-            gem translate
-          </span>
-        </button>
-
-      </div>
-
-      <div class="input-group">
-
-        <label>翻訳後URL</label>
-
-        <input
-          type="url"
-          placeholder="翻訳結果が表示されます"
-        >
-
-      </div>
-
-    </section>
-
-  </main>
-
-</body>
+    </footer>
+  </body>
 </html>
