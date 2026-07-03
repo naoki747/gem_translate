@@ -1,114 +1,126 @@
 <!doctype html>
 <html lang="ja">
-  <head>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gem Translate</title>
-    ./style.css
-    ./script.jsscript>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gem Translate</title>
 
-  <body>
-    <header class="site-header">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="brand-icon">G</div>
-          <span>Gem Translate</span>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <svg class="brand-icon" viewBox="0 0 76 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M37.5 0L75 65H0L37.5 0Z" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <strong>Gem Translate</strong>
+          <span>URL Translation Tool</span>
         </div>
-
-        <nav class="nav-links">
-          #特徴</a>
-          #使い方</a>
-          #サービス概要</a>
-        </nav>
       </div>
-    </header>
+      <nav class="nav">
+        <span>Features</span>
+        <span>Docs</span>
+        <span>About</span>
+      </nav>
+    </div>
+  </header>
 
-    <main class="container">
-      <section class="info-panel">
-        <div class="badge">AI URL Translation Service</div>
-
-        <h1>
-          URLを入れるだけで、<br />
-          翻訳ページへすぐアクセス。
-        </h1>
-
-        <p class="lead">
-          Gem Translateは、URLを入力して翻訳ページへすばやく移動できる
-          シンプルで使いやすい翻訳サポートツールです。
-        </p>
-
-        <div class="feature-list">
-          <div class="feature-card">
-            <span class="feature-icon">⚡</span>
-            <div>
-              <h3>すばやく変換</h3>
-              <p>URLを入力してボタンを押すだけ。余計な操作なしで使えます。</p>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <span class="feature-icon">🌐</span>
-            <div>
-              <h3>シンプルな操作</h3>
-              <p>難しい設定は不要。誰でも直感的に使える画面設計です。</p>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <span class="feature-icon">✨</span>
-            <div>
-              <h3>モダンなUI</h3>
-              <p>見やすく、使いやすく、ホームページ風のデザインにしました。</p>
-            </div>
-          </div>
+  <main class="container">
+    <!-- 翻訳画面（ファーストビュー最優先） -->
+    <section class="translator-panel">
+      <div class="translator-top">
+        <div>
+          <span class="small-label">Engine v2.0</span>
+          <h1>URL Translation</h1>
         </div>
-      </section>
-
-      <section class="translator-panel">
-        <div class="translator-header">
-          <div>
-            <span class="small-label">Translate</span>
-            <h2>URL翻訳</h2>
-          </div>
-          <div class="status-badge">Online</div>
+        <div class="status">
+          <span class="status-dot"></span>
+          Operational
         </div>
+      </div>
 
-        <div class="language-bar">
-          <span>翻訳元</span>
-          <span class="arrow">→</span>
-          <span>翻訳先</span>
-        </div>
+      <div class="language-header">
+        <span>Source URL</span>
+        <span class="arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+        <span>Translated Page</span>
+      </div>
 
-        <div class="input-group">
-          <label>翻訳したいURL</label>
-          <input type="url" value="https://google.com" />
-        </div>
+      <div class="input-group">
+        <label>翻訳したいURL</label>
+        <input
+          type="url"
+          value="https://google.com"
+        >
+      </div>
 
-        <div class="button-area">
-          <button>
-            <span style="font-size: 20px">gem translate</span>
-          </button>
-        </div>
+      <div class="button-area">
+        <button>
+          <span>gem translate</span>
+        </button>
+      </div>
 
-        <div class="input-group">
-          <label>翻訳後のURL</label>
-          <input type="url" placeholder="翻訳結果がここに表示されます" />
-        </div>
-      </section>
-    </main>
+      <div class="input-group">
+        <label>翻訳後URL</label>
+        <input
+          type="url"
+          placeholder="翻訳結果が表示されます"
+          readonly
+        >
+      </div>
 
-    <footer class="footer">
-      <p>
-        <a href="https://github.com/reactor-coding/buypass">
-          reactor-coding/buypass
-        </a>
-        (remixed
-        <a href="https://github.com/bypassiwastaken/buypass">
-          bypassiwastaken/buypass
-        </a>)
+      <p class="hint">
+        URLを入力して実行ボタンを押すと、自動的に最適な翻訳レイヤーを生成し、ページを展開します。
       </p>
-    </footer>
-  </body>
+    </section>
+
+    <!-- プロダクト概要（右側/下部） -->
+    <section class="info-panel">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Enterprise Ready
+      </div>
+
+      <h2>
+        海外サイトのエンジニアリングを、<br>
+        ネイティブな体験へ。
+      </h2>
+
+      <p>
+        Gem Translateは、任意のURLを入力するだけで、構造化されたデータとレイアウトを維持したまま翻訳ページへとルーティングする、最速のWeb翻訳ゲートウェイです。
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-header">
+            <span class="feature-icon">⚡</span>
+            <h3>Zero Config / Instant Access</h3>
+          </div>
+          <p>面倒な初期設定やアカウント作成は不要。URLのインプットのみで即座に翻訳ページへルーティングされます。</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header">
+            <span class="feature-icon">🌐</span>
+            <h3>Edge Translation Layer</h3>
+          </div>
+          <p>海外のドキュメンテーションや技術スタックの解説ページを、元のデザインを損なうことなくシームレスに最適化します。</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header">
+            <span class="feature-icon">🔒</span>
+            <h3>Minimalist Operations</h3>
+          </div>
+          <p>不要なUI要素を極限まで排除。直感的なインプットとワンクリックのアウトプットのみに特化したコア体験を提供します。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
 </html>
