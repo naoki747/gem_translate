@@ -1,3 +1,8 @@
 navigator.serviceWorker.addEventListener("message", (event) => {
-  location.replace(event.data.url);
+  const a = document.createElement("a");
+  a.href = event.data.url;
+  a.style.display = "none";
+
+  document.body.appendChild(a);
+  a.click();
 });
