@@ -21,4 +21,5 @@ function buypass() {
   ).show();
 }
 
-document.querySelector("button").onclick = buypass;
+document.getElementById("translateButton").onclick = buypass;
+

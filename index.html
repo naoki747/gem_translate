@@ -4,11 +4,475 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gem Translate</title>
-
-  <link rel="stylesheet" href="./style.css">
+  <style>
+:root {
+/* 背景を真っ黒から上品なダークグレーに変更 */
+--bg: #121214;
+--fg: #f5f5f7;
+/* レイヤー用のグレー階層（数字が上がるほど明るい） */
+--accents-1: #1a1a1e; /* パネル・ヘッダー内定着色 */
+--accents-2: #2a2a30; /* 通常のボーダー */
+--accents-3: #3a3a42; /* ホバー時のボーダー */
+--accents-4: #646470;
+--accents-5: #8e8e9c; /* サブテキスト */
+--accents-6: #aeaebe;
+--success: #0070f3;
+--success-light: #3291ff;
+--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+--radius: 8px;
+--transition: all 0.2s ease;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: var(--font-sans);
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+html {
+background-color: var(--bg);
+color: var(--fg);
+}
+body {
+min-height: 100vh;
+position: relative;
+overflow-x: hidden;
+/* 背景のグリッド線の不透明度を調整して馴染ませる */
+background-image:
+linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+background-size: 40px 40px;
+background-position: center top;
+}
+body::before {
+content: "";
+position: absolute;
+top: 0;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+max-width: 1200px;
+height: 400px;
+background: radial-gradient(50% 50% at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
+pointer-events: none;
+z-index: 0;
+}
+/* Header */
+.header {
+position: sticky;
+top: 0;
+z-index: 100;
+height: 64px;
+background: rgba(18, 18, 20, 0.75);
+border-bottom: 1px solid var(--accents-2);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+}
+.header-inner {
+max-width: 1200px;
+height: 100%;
+margin: 0 auto;
+padding: 0 24px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.brand {
+display: flex;
+align-items: center;
+gap: 12px;
+cursor: pointer;
+}
+.brand-icon {
+width: 18px;
+height: 18px;
+color: var(--fg);
+}
+.brand-text {
+display: flex;
+align-items: baseline;
+gap: 8px;
+}
+.brand-text strong {
+font-size: 14px;
+font-weight: 600;
+letter-spacing: -0.02em;
+}
+.brand-text span {
+color: var(--accents-5);
+font-size: 11px;
+font-weight: 400;
+}
+.nav {
+display: flex;
+gap: 24px;
+}
+.nav span {
+color: var(--accents-5);
+font-size: 14px;
+font-weight: 400;
+cursor: pointer;
+transition: var(--transition);
+}
+.nav span:hover {
+color: var(--fg);
+}
+/* Main Layout */
+.container {
+position: relative;
+z-index: 1;
+max-width: 1200px;
+margin: 0 auto;
+padding: 48px 24px 96px;
+display: grid;
+grid-template-columns: 1.1fr 0.9fr;
+gap: 48px;
+align-items: start;
+}
+/* Translator Panel (背景より一段階明るいグレーで視認性を確保) */
+.translator-panel {
+padding: 40px;
+border: 1px solid var(--accents-2);
+border-radius: var(--radius);
+background: var(--accents-1);
+box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+.translator-top {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 32px;
+border-bottom: 1px solid var(--accents-2);
+padding-bottom: 24px;
+}
+.small-label {
+display: block;
+font-family: monospace;
+color: var(--accents-5);
+font-size: 12px;
+margin-bottom: 4px;
+}
+.translator-top h1 {
+font-size: 28px;
+font-weight: 700;
+letter-spacing: -0.04em;
+color: var(--fg);
+}
+.status {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 4px 10px;
+border: 1px solid rgba(0, 112, 243, 0.2);
+border-radius: 20px;
+background: rgba(0, 112, 243, 0.05);
+color: var(--success-light);
+font-size: 12px;
+font-family: monospace;
+}
+.status-dot {
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: var(--success);
+box-shadow: 0 0 8px var(--success);
+}
+.language-header {
+height: 44px;
+margin-bottom: 8px;
+padding: 0 16px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border: 1px solid var(--accents-2);
+border-radius: var(--radius);
+background: var(--bg);
+color: var(--accents-5);
+font-size: 13px;
+font-weight: 500;
+}
+.arrow {
+display: flex;
+align-items: center;
+color: var(--accents-4);
+}
+.favorite-bar {
+min-height: 30px;
+margin-bottom: 18px;
+display: flex;
+align-items: center;
+gap: 6px;
+flex-wrap: wrap;
+transition: var(--transition);
+}
+.favorite-bar.is-added {
+filter: drop-shadow(0 0 10px rgba(50, 145, 255, 0.28));
+}
+.favorite-add,
+.favorite-item {
+width: 28px;
+height: 28px;
+padding: 0;
+display: inline-grid;
+place-items: center;
+flex: 0 0 auto;
+border-radius: 50%;
+border: 1px solid var(--accents-2);
+background: var(--bg);
+color: var(--accents-5);
+}
+.favorite-add {
+font-size: 18px;
+line-height: 1;
+}
+.favorite-add:hover,
+.favorite-item:hover {
+border-color: var(--accents-3);
+background: var(--accents-2);
+color: var(--fg);
+}
+.favorite-item.is-new {
+border-color: var(--success-light);
+box-shadow: 0 0 0 2px rgba(50, 145, 255, 0.16);
+}
+.favorite-item img {
+width: 16px;
+height: 16px;
+border-radius: 4px;
+display: block;
+}
+.favorite-empty {
+color: var(--accents-4);
+font-size: 11px;
+line-height: 1;
+}
+.favorite-modal {
+position: fixed;
+inset: 0;
+z-index: 200;
+display: grid;
+place-items: center;
+background: rgba(0, 0, 0, 0.45);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+}
+.favorite-modal[hidden] {
+display: none;
+}
+.favorite-modal-card {
+width: min(360px, calc(100vw - 32px));
+padding: 16px;
+border: 1px solid var(--accents-2);
+border-radius: var(--radius);
+background: var(--accents-1);
+box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.favorite-modal-title {
+margin-bottom: 10px;
+font-size: 13px;
+font-weight: 600;
+color: var(--fg);
+}
+.favorite-modal-input {
+width: 100%;
+height: 40px;
+padding: 0 12px;
+border: 1px solid var(--accents-2);
+border-radius: var(--radius);
+outline: none;
+background: var(--bg);
+color: var(--fg);
+font-size: 13px;
+}
+.favorite-modal-input:focus {
+border-color: var(--fg);
+box-shadow: 0 0 0 1px var(--fg);
+}
+.favorite-modal-actions {
+margin-top: 12px;
+display: flex;
+justify-content: flex-end;
+gap: 8px;
+}
+.favorite-modal-actions button {
+width: auto;
+height: 32px;
+padding: 0 12px;
+border-radius: 999px;
+font-size: 12px;
+}
+.favorite-cancel {
+border: 1px solid var(--accents-2);
+background: transparent;
+color: var(--accents-5);
+}
+.favorite-save {
+border: 1px solid var(--fg);
+background: var(--fg);
+color: var(--bg);
+}
+.input-group {
+margin-bottom: 24px;
+}
+.input-group label {
+display: block;
+margin-bottom: 8px;
+color: var(--accents-5);
+font-size: 12px;
+font-weight: 500;
+}
+/* 入力欄はパネル内でコントラストを出すためベース背景色(濃いグレー)に */
+input[type="url"] {
+width: 100%;
+height: 48px;
+padding: 0 16px;
+border: 1px solid var(--accents-2);
+border-radius: var(--radius);
+outline: none;
+background: var(--bg);
+color: var(--fg);
+font-size: 14px;
+transition: var(--transition);
+}
+input[type="url"]::placeholder {
+color: var(--accents-4);
+}
+input[type="url"]:focus {
+border-color: var(--fg);
+box-shadow: 0 0 0 1px var(--fg);
+}
+input[type="url"][readonly] {
+background: rgba(0, 0, 0, 0.15);
+color: var(--accents-4);
+border-color: var(--accents-2);
+cursor: not-allowed;
+}
+.button-area {
+margin: 32px 0;
+}
+.button-area button {
+width: 100%;
+height: 48px;
+border: 1px solid var(--fg);
+border-radius: var(--radius);
+background: var(--fg);
+color: var(--bg);
+cursor: pointer;
+font-size: 14px;
+font-weight: 500;
+transition: var(--transition);
+}
+.button-area button:hover {
+background: transparent;
+color: var(--fg);
+border-color: var(--fg);
+}
+button:active {
+transform: scale(0.99);
+}
+.hint {
+color: var(--accents-5);
+font-size: 12px;
+line-height: 1.6;
+}
+/* Info Panel */
+.info-panel {
+padding-top: 12px;
+}
+.badge {
+width: fit-content;
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 4px 12px;
+margin-bottom: 24px;
+border-radius: 20px;
+border: 1px solid var(--accents-2);
+background: transparent;
+color: var(--accents-5);
+font-size: 12px;
+font-weight: 500;
+}
+.badge-dot {
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: var(--accents-4);
+}
+.info-panel h2 {
+font-size: 36px;
+line-height: 1.15;
+letter-spacing: -0.05em;
+font-weight: 700;
+color: var(--fg);
+margin-bottom: 24px;
+}
+.info-panel p {
+color: var(--accents-5);
+font-size: 15px;
+line-height: 1.6;
+margin-bottom: 40px;
+}
+.features {
+display: grid;
+gap: 24px;
+border-top: 1px solid var(--accents-2);
+padding-top: 32px;
+}
+.feature {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.feature-header {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.feature-icon {
+font-size: 14px;
+}
+.feature h3 {
+color: var(--fg);
+font-size: 14px;
+font-weight: 600;
+letter-spacing: -0.01em;
+}
+.feature p {
+margin: 0;
+color: var(--accents-5);
+font-size: 13px;
+line-height: 1.6;
+}
+/* Responsive Grid Adjustments */
+@media (max-width: 960px) {
+.nav {
+display: none;
+}
+.container {
+grid-template-columns: 1fr;
+gap: 64px;
+padding-top: 32px;
+}
+}
+@media (max-width: 640px) {
+.header-inner {
+padding: 0 16px;
+}
+.container {
+padding: 24px 16px 64px;
+}
+.translator-panel {
+padding: 24px;
+}
+.info-panel h2 {
+font-size: 28px;
+}
+}
+  </style>
   <script src="./script.js" defer></script>
 </head>
-
 <body>
   <header class="header">
     <div class="header-inner">
@@ -28,7 +492,6 @@
       </nav>
     </div>
   </header>
-
   <main class="container">
     <!-- 翻訳画面（ファーストビュー最優先） -->
     <section class="translator-panel">
@@ -42,7 +505,6 @@
           Operational
         </div>
       </div>
-
       <div class="language-header">
         <span>Source URL</span>
         <span class="arrow">
@@ -50,21 +512,33 @@
         </span>
         <span>Translated Page</span>
       </div>
-
+      <div class="favorite-bar" aria-label="お気に入りURL">
+        <button class="favorite-add" type="button" title="お気に入りを追加" aria-label="お気に入りを追加">+</button>
+        <span class="favorite-empty">お気に入り</span>
+      </div>
+      <div class="favorite-modal" hidden>
+        <div class="favorite-modal-card" role="dialog" aria-modal="true" aria-labelledby="favoriteModalTitle">
+          <div class="favorite-modal-title" id="favoriteModalTitle">お気に入りに登録</div>
+          <input class="favorite-modal-input" type="url" placeholder="https://example.com">
+          <div class="favorite-modal-actions">
+            <button class="favorite-cancel" type="button">キャンセル</button>
+            <button class="favorite-save" type="button">登録</button>
+          </div>
+        </div>
+      </div>
       <div class="input-group">
         <label>翻訳したいURL</label>
         <input
+          id="sourceUrlInput"
           type="url"
           value="https://google.com"
         >
       </div>
-
       <div class="button-area">
-        <button>
+        <button id="translateButton">
           <span>gem translate</span>
         </button>
       </div>
-
       <div class="input-group">
         <label>翻訳後URL</label>
         <input
@@ -73,28 +547,23 @@
           readonly
         >
       </div>
-
       <p class="hint">
         URLを入力して実行ボタンを押すと、自動的に最適な翻訳レイヤーを生成し、ページを展開します。
       </p>
     </section>
-
     <!-- プロダクト概要（右側/下部） -->
     <section class="info-panel">
       <div class="badge">
         <span class="badge-dot"></span>
         Enterprise Ready
       </div>
-
       <h2>
         海外サイトのエンジニアリングを、<br>
         ネイティブな体験へ。
       </h2>
-
       <p>
         Gem Translateは、任意のURLを入力するだけで、構造化されたデータとレイアウトを維持したまま翻訳ページへとルーティングする、最速のWeb翻訳ゲートウェイです。
       </p>
-
       <div class="features">
         <div class="feature">
           <div class="feature-header">
@@ -103,7 +572,6 @@
           </div>
           <p>面倒な初期設定やアカウント作成は不要。URLのインプットのみで即座に翻訳ページへルーティングされます。</p>
         </div>
-
         <div class="feature">
           <div class="feature-header">
             <span class="feature-icon">🌐</span>
@@ -111,7 +579,6 @@
           </div>
           <p>海外のドキュメンテーションや技術スタックの解説ページを、元のデザインを損なうことなくシームレスに最適化します。</p>
         </div>
-
         <div class="feature">
           <div class="feature-header">
             <span class="feature-icon">🔒</span>
@@ -122,5 +589,96 @@
       </div>
     </section>
   </main>
+  <script>
+(() => {
+  const storageKey = "gemTranslateFavorites";
+  const input = document.getElementById("sourceUrlInput");
+  const translateButton = document.getElementById("translateButton");
+  const bar = document.querySelector(".favorite-bar");
+  const addButton = document.querySelector(".favorite-add");
+  const emptyText = document.querySelector(".favorite-empty");
+  const modal = document.querySelector(".favorite-modal");
+  const modalInput = document.querySelector(".favorite-modal-input");
+  const saveButton = document.querySelector(".favorite-save");
+  const cancelButton = document.querySelector(".favorite-cancel");
+  let lastAddedUrl = "";
+
+  const loadFavorites = () => JSON.parse(localStorage.getItem(storageKey) || "[]");
+  const saveFavorites = (items) => localStorage.setItem(storageKey, JSON.stringify(items));
+  const normalizeUrl = (value) => {
+    const trimmed = value.trim();
+    if (!trimmed) return "";
+    return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  };
+  const faviconUrl = (url) => {
+    const domain = new URL(url).hostname;
+    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32`;
+  };
+
+  const renderFavorites = () => {
+    bar.querySelectorAll(".favorite-item").forEach((item) => item.remove());
+    const favorites = loadFavorites();
+    emptyText.style.display = favorites.length ? "none" : "inline";
+
+    favorites.forEach((url) => {
+      const item = document.createElement("button");
+      item.className = `favorite-item${url === lastAddedUrl ? " is-new" : ""}`;
+      item.type = "button";
+      item.title = url;
+      item.ariaLabel = `${url} を翻訳`;
+      item.innerHTML = `<img src="${faviconUrl(url)}" alt="">`;
+      item.addEventListener("click", () => {
+        input.value = url;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        translateButton.click();
+      });
+      bar.appendChild(item);
+    });
+  };
+
+  const openModal = () => {
+    modal.hidden = false;
+    modalInput.value = "";
+    requestAnimationFrame(() => modalInput.focus());
+  };
+  const closeModal = () => {
+    modal.hidden = true;
+  };
+  const addFavorite = () => {
+    try {
+      const url = normalizeUrl(modalInput.value);
+      if (!url) return modalInput.focus();
+      new URL(url);
+      const favorites = loadFavorites().filter((item) => item !== url);
+      favorites.unshift(url);
+      lastAddedUrl = url;
+      saveFavorites(favorites.slice(0, 12));
+      renderFavorites();
+      closeModal();
+      bar.classList.add("is-added");
+      setTimeout(() => {
+        bar.classList.remove("is-added");
+        lastAddedUrl = "";
+        renderFavorites();
+      }, 1400);
+    } catch (_) {
+      modalInput.focus();
+    }
+  };
+
+  addButton.addEventListener("click", openModal);
+  saveButton.addEventListener("click", addFavorite);
+  cancelButton.addEventListener("click", closeModal);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+  modalInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") addFavorite();
+    if (event.key === "Escape") closeModal();
+  });
+
+  renderFavorites();
+})();
+  </script>
 </body>
 </html>
