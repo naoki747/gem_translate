@@ -5,4 +5,6 @@ navigator.serviceWorker.addEventListener("message", (event) => {
 
   document.body.appendChild(a);
   a.click();
+
+  a.remove();
 });
