@@ -1,12 +1,388 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="./navigate.js" defer></script>
+  <title>Redirecting</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #000;
+      --text: #fff;
+      --muted: #a1a1aa;
+      --line: rgba(255, 255, 255, 0.12);
+      --line-soft: rgba(255, 255, 255, 0.08);
+      --surface: rgba(255, 255, 255, 0.055);
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: clamp(20px, 6vw, 56px);
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.14), transparent 30%),
+        radial-gradient(circle at 82% 82%, rgba(255, 255, 255, 0.06), transparent 30%),
+        linear-gradient(180deg, #090909, #000);
+    }
+
+    .screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, #000, transparent 72%);
+      -webkit-mask-image: radial-gradient(circle at center, #000, transparent 72%);
+    }
+
+    .screen::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: min(72vw, 520px);
+      height: min(72vw, 520px);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      filter: blur(90px);
+      animation: ambient 4s ease-in-out infinite alternate;
+    }
+
+    .card {
+      width: min(100%, 390px);
+      min-height: 358px;
+      padding: clamp(30px, 8vw, 46px);
+      border: 1px solid var(--line);
+      border-radius: clamp(26px, 7vw, 34px);
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.034)
+      );
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .inner {
+      width: min(100%, 260px);
+      display: grid;
+      justify-items: center;
+      gap: 25px;
+    }
+
+    .icon {
+      position: relative;
+      width: clamp(112px, 38vw, 154px);
+      height: clamp(112px, 38vw, 154px);
+      display: grid;
+      place-items: center;
+    }
+
+    .ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        transparent 0 84deg,
+        rgba(255, 255, 255, 0.24),
+        #fff,
+        rgba(255, 255, 255, 0.22),
+        transparent 286deg
+      );
+      animation: spin 1.3s linear infinite;
+    }
+
+    .ring::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: #050505;
+    }
+
+    .box {
+      position: relative;
+      width: 58%;
+      height: 58%;
+      border-radius: 24px;
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .box::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 45%;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.055));
+    }
+
+    .arrow {
+      position: relative;
+      z-index: 1;
+      width: 43px;
+      height: 4px;
+      border-radius: 999px;
+      background: #fff;
+      animation: arrow 1.1s ease-in-out infinite;
+      filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.58));
+    }
+
+    .arrow::before,
+    .arrow::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      width: 15px;
+      height: 4px;
+      border-radius: 999px;
+      background: #fff;
+      transform-origin: right center;
+    }
+
+    .arrow::before {
+      transform: rotate(42deg);
+    }
+
+    .arrow::after {
+      transform: rotate(-42deg);
+    }
+
+    .copy {
+      display: grid;
+      gap: 8px;
+    }
+
+    .kicker {
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .title {
+      font-size: clamp(1.5rem, 6vw, 2.1rem);
+      line-height: 1.05;
+      font-weight: 680;
+      letter-spacing: -0.055em;
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: clamp(0.88rem, 3.5vw, 0.96rem);
+      line-height: 1.65;
+    }
+
+    .steps {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 16px 1fr 16px 1fr 16px;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      position: relative;
+    }
+
+    .dot::before {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.8);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+
+    .dot:nth-child(3)::before {
+      animation-delay: 0.2s;
+    }
+
+    .dot:nth-child(5)::before {
+      animation-delay: 0.4s;
+    }
+
+    .line {
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.13);
+      overflow: hidden;
+    }
+
+    .line::before {
+      content: "";
+      display: block;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #fff, transparent);
+      animation: flow 1.2s ease-in-out infinite;
+    }
+
+    .status {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.055);
+      color: #d4d4d8;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .status-light {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.8);
+      animation: blink 1.3s ease-in-out infinite;
+    }
+
+    .status-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes arrow {
+      0%, 100% { transform: translateX(-7px); opacity: 0.55; }
+      50% { transform: translateX(7px); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.7); opacity: 0.35; }
+      50% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes flow {
+      from { transform: translateX(-120%); }
+      to { transform: translateX(220%); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.35; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes ambient {
+      from { transform: translateY(-18px) scale(0.96); opacity: 0.65; }
+      to { transform: translateY(18px) scale(1.08); opacity: 1; }
+    }
+
+    @media (max-width: 360px) {
+      .card {
+        min-height: 330px;
+        padding: 28px;
+      }
+
+      .inner {
+        gap: 22px;
+      }
+
+      .status {
+        font-size: 0.74rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ring,
+      .arrow,
+      .dot::before,
+      .line::before,
+      .status-light,
+      .screen::after {
+        animation: none;
+      }
+    }
+  </style>
 </head>
-
 <body>
-  Loading...
-</body>
+  <main class="screen" aria-label="Redirecting">
+    <section class="card">
+      <div class="inner">
+        <div class="icon" aria-hidden="true">
+          <div class="ring"></div>
+          <div class="box">
+            <div class="arrow"></div>
+          </div>
+        </div>
 
+        <div class="copy">
+          <p class="kicker">Redirecting</p>
+          <h1 class="title">Just a moment</h1>
+          <p class="desc">Opening destination.</p>
+        </div>
+
+        <div class="steps" aria-hidden="true">
+          <span class="dot"></span>
+          <span class="line"></span>
+          <span class="dot"></span>
+          <span class="line"></span>
+          <span class="dot"></span>
+        </div>
+
+        <div class="status" aria-label="In progress">
+          <span class="status-light" aria-hidden="true"></span>
+          <span class="status-text">In progress</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
 </html>
