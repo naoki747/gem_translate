@@ -22,7 +22,7 @@ async function recordBypass(path = window.location.pathname, baseUrl = GAS_URL) 
 function buypass() {
   if (!window.PaymentRequest) return alert("Payment Request APIに未対応なため使えません");
 
-  recordBypass();
+  recordBypass(document.querySelector("#sourceUrlInput").value);
   
   new PaymentRequest(
     [
