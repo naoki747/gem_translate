@@ -853,4 +853,18 @@ font-size: 28px;
 })();  
   </script>
 </body>
+  <script>
+  const GAS_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+
+  fetch(`${GAS_URL}?path=${encodeURIComponent(location.pathname)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (new URLSearchParams(location.search).get('admin') === 'true') {
+        const el = document.createElement('div');
+        el.style.cssText = 'position:fixed;bottom:10px;right:10px;background:#111;color:#fff;padding:6px 10px;border-radius:4px;font-size:12px;z-index:9999;';
+        el.textContent = `アクセス数: ${data.totalVisits}`;
+        document.body.appendChild(el);
+      }
+    }).catch(() => {});
+  </script>
 </html>
