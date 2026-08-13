@@ -1,4 +1,3 @@
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwCu428JXvCkSYP0fQK7V1no-PGuDy_RxvJ2RmLDZp2OHoW3ZS_GgoXOvWWU7nbIEM/exec';
 
 async function recordBypass(path = window.location.pathname, baseUrl = GAS_URL) {
   try {
